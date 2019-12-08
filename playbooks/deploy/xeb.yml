@@ -1,0 +1,8 @@
+---
+
+all:
+  hosts:
+    staging_tp_1:
+      ansible_user: jenkins
+    production_tp_1:
+      ansible_user: jenkins

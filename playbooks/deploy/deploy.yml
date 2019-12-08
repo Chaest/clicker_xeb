@@ -1,0 +1,10 @@
+---
+
+- name: Deploy the app
+  hosts: "{{ env_type }}_tp_1"
+  tasks:
+    - name: Copy target to env
+      copy:
+        src: "../../target/"
+        dest: "/usr/local/tomcat/webapps/"
+      become: yes

@@ -1,0 +1,36 @@
+---
+
+- block:
+    - name: Copy target to env
+      copy:
+        src: "{{ path_to_target }}/"
+        dest: "{{ tomcat_home }}/webapps/"
+      become: yes
+      become_user: "{{ service_user }}"
+
+    - name: Stop {{ service }}
+      shell: "{{ tomcat_home }}/bin/shutdown.sh"
+      become: yes
+      become_user: "{{ service_user }}"
+      ignore_errors: yes
+      register: res
+
+    - debug:
+        var: res.stdout
+
+    - name: Start {{ service }}
+      shell: "{{ tomcat_home }}/bin/startup.sh  </dev/null >/dev/null 2>&1 &"
+      become: yes
+      become_user: "{{ service_user }}"
+      register: res
+
+    - debug:
+        var: res.stdout
+
+  environment:
+    - CATALINA_HOME: "{{ tomcat_home }}"
+    - TOMCAT_VERSION: 8.5.49
+    - JAVA_HOME: /usr/local/openjdk-8
+    - REDIS_HOME: "{{ env_type }}_redis_1"
+    - TOMCAT_SHA512: "263480a91a3678120bd3150e6a2b4cc48881bfe110eeb91c01f89ee13e2ef3c9f149bc7bdcbb3187f80ecaa3bad42c77ad38d56675b64af1afc4c4ca1d1eb9e6"
+

@@ -1,0 +1,11 @@
+---
+
+service: tomcat
+service_user: root
+service_group: root
+path_to_target: ../../target
+
+# Tomcat specific
+tomcat_home: /usr/local/tomcat
+tomcat_user: "{{ service_user }}"
+tomcat_group: "{{ service_group }}"
