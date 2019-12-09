@@ -1,0 +1,26 @@
+---
+
+- name: Ensure {{ jenkins_version }} directory exists
+  file:
+    path: "{{ path_to_installer }}"
+    state: directory
+  become: yes
+
+- name: Create network {{ app }}_network
+  docker_network:
+    name: "{{ app }}_network"
+
+- name: Adding templates
+  template:
+    src: "{{ item }}"
+    dest: "{{ path_to_installer }}/{{ item }}"
+  vars:
+    deploy_job: "{{ lookup('template', 'deploy_job.groovy') }}"
+  loop: "{{ jenkins_template_files }}"
+  
+- name: Adding files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ path_to_installer }}/{{ item }}"
+  loop: "{{ jenkins_ref_files }}"
+  when: item not in jenkins_template_files

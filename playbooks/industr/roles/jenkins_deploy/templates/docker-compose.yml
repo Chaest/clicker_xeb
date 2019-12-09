@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+  jenkins:
+    build: .
+    ports:
+     - "{{ jenkins_port }}:8080"
+     - "{{ jenkins_master_port }}:50000"
+    networks:
+      - "{{ app }}_network"
+    volumes:
+     - jenkins_{{ app }}_data:/var/jenkins_home
+    restart: always
+    environment:
+     - CASC_JENKINS_CONFIG={{ jenkins_ref_dir }}/jenkins.yml
+volumes:
+  jenkins_{{ app }}_data:
+    driver_opts:
+      type: none
+      device: {{ path_to_volume }}
+      o: bind
+networks:
+  {{ app }}_network:
+    external:
+      name: "{{ app }}_network"

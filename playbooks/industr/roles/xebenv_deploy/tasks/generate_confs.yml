@@ -1,0 +1,26 @@
+---
+
+- name: Ensure {{ env_type }} directory exists
+  file:
+    path: "{{ path_to_installer }}"
+    state: directory
+  become: yes
+
+- name: Create network {{ network_name }}
+  docker_network:
+    name: "{{ network_name }}"
+
+- name: Adding templates
+  template:
+    src: "{{ item }}"
+    dest: "{{ path_to_installer }}/{{ item }}"
+  loop:
+    - Dockerfile
+    - docker-compose.yml
+  become: yes
+
+- name: Adding wrapper script
+  copy:
+    src: wrapper.sh
+    dest: "{{ path_to_installer }}/wrapper.sh"
+  become: yes

@@ -1,0 +1,67 @@
+---
+
+jenkins:
+  systemMessage: "Welcome to Jenkins!"
+  numExecutors: 8
+  scmCheckoutRetryCount: 4
+  mode: NORMAL
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: false
+  remotingSecurity:
+    enabled: true
+  authorizationStrategy:
+    projectMatrix:
+      grantedPermissions:
+{{ granted_permissions | indent(6, True) }}
+  securityRealm:
+    ldap:
+      configurations:
+      - server: "ldap://{{ ldap_server }}{% if ldap_port is defined %}:{{ ldap_port }}{% endif %}"
+        managerDN: "{{ ldap_admin }}"
+        managerPasswordSecret: "{{ ldap_password }}"
+        rootDN: "{{ ldap_root }}"
+        userSearchBase: "{{ ldap_user_search_base }}"
+        groupSearchBase: "{{ ldap_group_search_base }}"
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+        - usernamePassword:
+            id: github
+            username: {{ github_user }}
+            password: {{ github_token }}
+            scope: GLOBAL
+            description: "Github pulling user"
+unclassified:
+  simple-theme-plugin:
+    elements:
+      - cssText:
+          text: |
+           .pipeline-annotated {
+              display: none;
+            }
+            .pipeline-new-node {
+              display: none;
+            }
+  globalLibraries:
+    libraries:
+      - name: "groovylibs"
+        defaultVersion: {{ groovy_libs_branch }}
+        implicit: true
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                credentialsId: "github"
+                id: "ef95e0d6-f3d1-4e0c-b255-d6b397f2d9bb"
+                remote: {{ groovy_libs_git_repo }}
+  location:
+    url: "http://jenkins"
+jobs:
+  - script: |
+{{ deploy_job | indent(8, True) }}
+

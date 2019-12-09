@@ -1,0 +1,8 @@
+---
+
+path_to_installer: "{{ installer_base_dir }}/{{ app }}/xebenv/{{ env_type }}/"
+
+redis_volume_name: "{{ app }}_{{ env_type }}_redis_volume"
+redis_volume_path: /docker/volumes/{{ app }}/xebia/{{ env_type }}/redis/data
+
+network_name: "{{ app }}_{{ env_type }}_network"

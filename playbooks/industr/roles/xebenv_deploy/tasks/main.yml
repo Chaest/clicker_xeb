@@ -1,0 +1,21 @@
+---
+
+- name: Generate the xebenv's confs
+  import_tasks: generate_confs.yml
+
+- name: Ensure directories exist
+  file:
+    path: "{{ redis_volume_path }}"
+    state: directory
+  become: yes
+
+- name: Tear down existing services
+  docker_compose:
+    project_src: "{{ path_to_installer }}"
+    state: absent
+   
+- name: Create and start services
+  docker_compose:
+    project_src: "{{ path_to_installer }}"
+    build: yes
+  register: output

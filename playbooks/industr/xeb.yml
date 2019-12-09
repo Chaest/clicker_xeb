@@ -1,0 +1,26 @@
+---
+
+all:
+  children:
+    docker_host:
+      hosts:
+        localhost:
+          ansible_connection: local
+          ansible_user: tech
+          ansible_become_pass: !vault |
+                  $ANSIBLE_VAULT;1.1;AES256
+                  66303832373765303964356130656130653962356463636137376165653231323265333334656639
+                  3163373166303239383531316139646564613861386264610a383537633036363962306563666563
+                  36343530353732646461663464383237643133623663303861323562396566343261653733326263
+                  3764346232616530660a333730633965653732393165666362336666333161336362353362386639
+                  6330
+    jenkins:
+      hosts:
+        clicker_jenkins_1:
+          ansible_connection: docker
+    back:
+      hosts:
+        staging_back_1:
+          ansible_connection: docker
+        production_back_1:
+          ansible_connection: docker

@@ -2,7 +2,7 @@
 
 all:
   hosts:
-    staging_tp_1:
+    staging_back_1:
       ansible_user: jenkins
-    production_tp_1:
+    production_back_1:
       ansible_user: jenkins

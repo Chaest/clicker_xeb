@@ -1,0 +1,9 @@
+---
+
+- name: Add a {{ container }} to backs' networks
+  docker_network:
+    name: "{{ app }}_{{ item }}_network"
+    connected:
+      - "{{ container }}"
+    appends: yes
+  loop: "{{ backs }}"

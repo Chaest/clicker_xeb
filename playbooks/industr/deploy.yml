@@ -1,0 +1,44 @@
+---
+
+- name: Deploy Jenkins
+  hosts: docker_host
+  tasks:
+    - import_role:
+        name: jenkins_deploy
+  tags:
+    - jenkins
+
+- name: Deploy Xebenvs
+  hosts: docker_host
+  tasks:
+    - include_role:
+        name: xebenv_deploy
+      vars:
+        env_type: "{{ _.type }}"
+        app_port: "{{ _.port }}"
+      loop_control:
+        loop_var: _
+      loop:
+        - type: staging
+          port: 8054
+        - type: production
+          port: 8055
+  tags:
+    - xebenvs
+
+- name: Prepare SSH connections
+  hosts: docker_host
+  tasks:
+    - import_role:
+        name: add_to_backs_networks
+      vars:
+        container: "{{ groups['jenkins'][0] }}"
+        backs:
+          - staging
+          - production
+    - import_role: 
+        name: ssh_connection
+  tags:
+    - jenkins
+    - xebenvs
+    - ssh

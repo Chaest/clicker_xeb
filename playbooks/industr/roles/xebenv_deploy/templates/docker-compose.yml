@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  redis:
+    image: redis
+    networks:
+      - {{ network_name }}
+    volumes:
+      - {{ redis_volume_name }}:/data
+    restart: always
+  back:
+    build: .
+    ports:
+      - {{ app_port }}:8080
+    networks:
+      - {{ network_name }}
+    restart: always
+volumes:
+  {{ redis_volume_name }}:
+    driver_opts:
+      type: none
+      device: {{ redis_volume_path }}
+      o: bind
+networks:
+  {{ network_name }}:
+    external:
+      name: {{ network_name }}

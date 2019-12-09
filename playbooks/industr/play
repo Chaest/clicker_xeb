@@ -1,0 +1,7 @@
+#!/bin/bash
+
+stra.jar -d -f vault.key.stra > vault.key
+
+ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook --vault-password-file vault.key $@
+
+rm vault.key

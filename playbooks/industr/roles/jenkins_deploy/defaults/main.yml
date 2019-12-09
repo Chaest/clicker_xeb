@@ -1,0 +1,72 @@
+---
+
+jenkins_version: xeb_specific
+
+path_to_installer: "{{ installer_base_dir }}/{{ jenkins_version }}/{{ app }}/"
+path_to_volume: /docker/volumes/{{ app }}/jenkins/data
+jenkins_url: http://localhost:{{ jenkins_port }}
+jenkins_container_name: "{{ app }}_jenkins_1"
+jenkins_share_dir: /usr/share/jenkins
+jenkins_ref_dir: "{{ jenkins_share_dir }}/ref"
+jenkins_venv_dir: "{{ jenkins_share_dir }}/venv"
+jenkins_ref_files:
+  - requirements.txt
+  - plugins.txt
+  - jenkins.yml
+  - selenium_prepare.sh
+jenkins_template_files:
+  - Dockerfile
+  - docker-compose.yml
+  - jenkins.yml 
+
+# Jenkins information
+jenkins_admin_user: xebadm
+jenkins_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64376639646138653362353863623064626338313134616565306366393736666134386332323662
+          3164373137643238333463313361633665373939313961370a643233613333653737353966623832
+          34383933363633633261616531333835326335656531343666616362303030616264336333613038
+          6233326463653934360a333233643330656637326664383733316632376236633536323037633636
+          39616133653065613866616232626333633236373534323466343762326466316165653431626234
+          3635656230383631303130343930303731326462353062313333
+jenkins_port: 8052
+jenkins_master_port: 8053
+granted_permissions: |
+          - Overall/Read:xeboeple
+          - Job/Read:xeboeple
+          - Job/Discover:anonymous
+          - Overall/Administer:admins
+
+deploy_job_desc: |
+  This is a multipipeline used to deploy the clicker application
+deploy_job_name: ClickerDeploy
+
+
+# Ldap information
+ldap_server: zigip.hopto.org
+ldap_root: dc=zigip,dc=hopto,dc=org
+ldap_admin: cn=admin,{{ ldap_root }}
+ldap_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38633735653835373237353464316463653538653661323432316565373831386664633937396532
+          6535656536663239643833653831396338613461323636380a613937663730663038366565353639
+          66393064313134636136656139313136363832343431623135323661376431356134633635313265
+          6430653934653334350a353437366136623561343064353463393639636235333664376161626234
+          31326661653164333432376263623639316139313363616630356432313330396362303738616637
+          3335303734366237653030613961373930323861623533636630
+ldap_user_search_base: ou=people,ou=xebia
+ldap_group_search_base: ou=groups,ou=xebia
+
+# Github information
+github_user: Chaest
+github_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          33393137373030663634346630386365373033373262396537353439336336633331323464623762
+          3839653533393032366164383338616533326466356635360a336261313836373036626532623932
+          63366566326335613930386165656262386634646663376436323661343661343963616639646665
+          6332396630356134330a393466393334323665653364353666623037383030613535356566633234
+          37626133636333363337383064343865336237386534653161363534343638323932323032646637
+          3437373339643539393536396462646464313939616134383665
+clicker_github_repo: https://github.com/Chaest/clicker_xeb
+groovy_libs_branch: master
+groovy_libs_git_repo: https://github.com/Chaest/clicker_groovylibs
