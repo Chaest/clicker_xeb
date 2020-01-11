@@ -8,16 +8,22 @@ It consists of:
 It uses:
  * A preconfigured **OpenLDAP server**: The *base.ldif.stra* file contains a backup for all groups and users
  * A preconfigured **Groovy library**: It can be found [here](https://github.com/Chaest/clicker_groovylibs)
+ * The `ssh` folder that must contains the private and public key used for SSH connections between the applications and Jenkins
+
+It works by:
+1. Provisionning three AWS instances (one for Jenkins, and one for each environment)
+2. Deploying Jenkins
+3. Deploying the environments
 
 The following diagram is there to help vizualize the final installation:  
 ![pipeline](../../resources/indus.png)
 
 # The STRA encryption
 
-The vault key and the LDIF are kept in this repository mostly for back up purposes.  
+The vault key, ssh key pair and the LDIF are kept in this repository mostly for back up purposes.  
 They have been encrypted using the *inastra* algorithm (a personal algorithm).  
 
-If *inastra* is installed on the host server, the **play** script can be used to automatically decrypt the key during the deployment.  
+If *inastra* is installed on the deployment server, the **play** script can be used to automatically decrypt the key during the deployment.  
 The playbook `xebault_rt.yml` is present for regression testing purposes.
 
 # Use

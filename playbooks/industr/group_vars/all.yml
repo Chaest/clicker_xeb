@@ -8,7 +8,10 @@ installer_base_dir: /data/installers
 
 # Jenkins to xebenvs' comunication information
 ssh_key_name: id_rsa
+jenkins_host_user: ubuntu
+jenkins_container_name: "{{ app }}_jenkins_1"
 jenkins_to_back_user: jenkins
+jenkins_to_back_ssh_dir: /home/{{ jenkins_to_back_user }}/.ssh 
 jenkins_to_back_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           39653834316335373031613662653563313535613234393635393535396666363539336665306664
@@ -16,4 +19,10 @@ jenkins_to_back_password: !vault |
           36323037646633643238333564306239346234643332646333646262396266636530396538626637
           3738353438346364340a363430626361313739316566363031663233303738333564653361626332
           66376236646263393937613237343437666338646637643537643136646634653932
+
+# Connection information
+ports:
+  ssh: 22
+  http: 80
+  container_ssh: 2222
 

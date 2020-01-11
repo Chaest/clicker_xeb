@@ -6,3 +6,7 @@ redis_volume_name: "{{ app }}_{{ env_type }}_redis_volume"
 redis_volume_path: /docker/volumes/{{ app }}/xebia/{{ env_type }}/redis/data
 
 network_name: "{{ app }}_{{ env_type }}_network"
+
+env_type: xebenv
+app_port: "{{ ports['http'] }}"
+ssh_port: "{{ ports['container_ssh'] }}"

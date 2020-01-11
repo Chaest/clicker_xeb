@@ -1,5 +1,13 @@
 ---
 
+- name: Copy SSH key pair 
+  copy:
+    src: ../../ssh/{{ item }}
+    dest: "{{ path_to_installer }}/{{ item }}"
+  loop:
+    - "{{ ssh_key_name }}"
+    - "{{ ssh_key_name }}.pub"
+
 - name: Ensure {{ jenkins_version }} directory exists
   file:
     path: "{{ path_to_installer }}"

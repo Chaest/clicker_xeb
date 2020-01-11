@@ -1,7 +1,7 @@
 ---
 
 - name: Deploy the app
-  hosts: "{{ env_type }}_back_1"
+  hosts: "{{ env_type }}"
   tasks:
     - name: Copy target to env
       copy:

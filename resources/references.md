@@ -11,28 +11,26 @@ graph TD
     AA[OpenLDAP]
     AB[Github]
   end
-
-  subgraph Industr
-    BA[Host]
+  
+  subgraph AWS
     BB[Jenkins]
-    BC[staging]
-    BD[production]
 
-    subgraph staging_network
-      BAA[TP]
+    subgraph staging
+      BAA[App]
       BAB[Redis]
     end
 
-    subgraph production_network
-      BBA[TP]
+    subgraph production
+      BBA[App]
       BBB[Redis]
     end
-
   end
+  
+  BA[Deployment server]
 
+  BA --> |deploys|BBA
   BA --> |deploys|BB
-  BA --> |deploys|BC
-  BA --> |deploys|BD
+  BA --> |deploys|BAA
   BB --> |authenticates with|AA
   BB --> |gets libraries from|AB
   

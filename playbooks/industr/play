@@ -1,7 +1,10 @@
 #!/bin/bash
 
 stra.jar -d -f vault.key.stra > vault.key
+stra.jar -d -f ssh/id_rsa.stra > ssh/id_rsa
+stra.jar -d -f ssh/id_rsa.pub.stra > ssh/id_rsa.pub
 
-ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook --vault-password-file vault.key $@
+ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook --vault-password-file vault.key $@
 
-rm vault.key
+rm vault.key ssh/id_rsa ssh/id_rsa.pub
+

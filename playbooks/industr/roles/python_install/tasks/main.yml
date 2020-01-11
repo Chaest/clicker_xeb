@@ -1,0 +1,5 @@
+---
+
+- name: Install Python
+  raw: apt-get update && apt-get -y install python python-pip
+  become: yes

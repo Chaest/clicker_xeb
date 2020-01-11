@@ -1,44 +1,58 @@
 ---
 
-- name: Deploy Jenkins
-  hosts: docker_host
+- name: Deploy infra
+  hosts: localhost
   tasks:
+    - import_role:
+        name: create_infra
+      tags:
+        - install
+        - deploy
+        - jenkins
+        - xebenvs
+
+- name: Deploy Jenkins
+  hosts: jenkins
+  gather_facts: no
+  tasks:
+    - name: Wait 600 seconds for jenkins connection to become reachable/usable
+      wait_for_connection:
+    - import_role:
+        name: python_install
+      tags:
+        - install
+    - import_role:
+        name: docker_install
+      tags:
+        - install
     - import_role:
         name: jenkins_deploy
+      tags:
+        - install
+        - deploy
   tags:
     - jenkins
+  become: yes
 
 - name: Deploy Xebenvs
-  hosts: docker_host
+  hosts: environments
   tasks:
-    - include_role:
-        name: xebenv_deploy
-      vars:
-        env_type: "{{ _.type }}"
-        app_port: "{{ _.port }}"
-      loop_control:
-        loop_var: _
-      loop:
-        - type: staging
-          port: 8054
-        - type: production
-          port: 8055
-  tags:
-    - xebenvs
-
-- name: Prepare SSH connections
-  hosts: docker_host
-  tasks:
+    - name: Wait 600 seconds for the env connection to become reachable/usable
+      wait_for_connection:
     - import_role:
-        name: add_to_backs_networks
-      vars:
-        container: "{{ groups['jenkins'][0] }}"
-        backs:
-          - staging
-          - production
-    - import_role: 
-        name: ssh_connection
+        name: python_install
+      tags:
+        - install
+    - import_role:
+        name: docker_install
+      tags:
+        - install
+    - import_role:
+        name: xebenv_deploy
+      tags:
+        - install
+        - deploy
   tags:
-    - jenkins
     - xebenvs
-    - ssh
+  become: yes
+

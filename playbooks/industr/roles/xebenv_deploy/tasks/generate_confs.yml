@@ -1,5 +1,10 @@
 ---
 
+- name: Copy SSH public key 
+  copy:
+    src: ../../ssh/{{ ssh_key_name }}.pub
+    dest: "{{ path_to_installer }}/{{ ssh_key_name }}.pub"
+
 - name: Ensure {{ env_type }} directory exists
   file:
     path: "{{ path_to_installer }}"

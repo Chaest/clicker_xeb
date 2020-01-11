@@ -1,0 +1,38 @@
+---
+
+- name: Ensure the terraform project folder exists
+  file:
+    dest: "{{ project_dir }}"
+    state: directory
+  become: yes
+
+- name: Adding terraform files to project
+  template:
+    src: "{{ item }}.tf"
+    dest: "{{ project_dir }}/{{ item }}.tf"
+  loop:
+    - infra
+    - variables
+    - output
+    - network
+  become: yes
+
+- name: Deploy the AWS infrastructure
+  terraform:
+    project_path: "{{ project_dir }}"
+    state: present
+  become: yes
+  register: tfout
+
+- name: Adding hosts
+  vars:
+    host_name: "{{ item.key.split('_')[0] }}"
+    host_dns: "{{ item.value.value }}"  
+  add_host:
+    name: "{{ host_name }}"
+    groups: "{{ 'environments' if host_name != 'jenkins' else 'all' }}"
+    ansible_host: "{{ host_dns }}"
+    ansible_user: "{{ jenkins_host_user }}"
+    env_ip: "{{ tfout.outputs[host_name+'_public_ip']['value'] }}"
+  when: item.key.split('_')[2] == 'dns'
+  loop: "{{ tfout.outputs | dict2items }}"

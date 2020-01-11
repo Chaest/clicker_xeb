@@ -5,10 +5,10 @@ jenkins_version: xeb_specific
 path_to_installer: "{{ installer_base_dir }}/{{ jenkins_version }}/{{ app }}/"
 path_to_volume: /docker/volumes/{{ app }}/jenkins/data
 jenkins_url: http://localhost:{{ jenkins_port }}
-jenkins_container_name: "{{ app }}_jenkins_1"
 jenkins_share_dir: /usr/share/jenkins
 jenkins_ref_dir: "{{ jenkins_share_dir }}/ref"
 jenkins_venv_dir: "{{ jenkins_share_dir }}/venv"
+jenkins_ssh_dir: /root/.ssh
 jenkins_ref_files:
   - requirements.txt
   - plugins.txt
@@ -29,8 +29,8 @@ jenkins_admin_password: !vault |
           6233326463653934360a333233643330656637326664383733316632376236633536323037633636
           39616133653065613866616232626333633236373534323466343762326466316165653431626234
           3635656230383631303130343930303731326462353062313333
-jenkins_port: 8052
-jenkins_master_port: 8053
+jenkins_port: 80
+jenkins_master_port: 8001
 granted_permissions: |
           - Overall/Read:xeboeple
           - Job/Read:xeboeple

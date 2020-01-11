@@ -29,23 +29,3 @@
   until: answer.status == 200
   retries: 60
   delay: 4
-
-- name: Backup jenkins.yml
-  delegate_to: "{{ groups['jenkins'][0] }}"
-  copy:
-    src: "{{ jenkins_ref_dir }}/jenkins.yml"
-    dest: "{{ jenkins_ref_dir }}/jenkins.yml.bkp"
-    remote_src: yes
-
-- name: Remove jenkins.yml content
-  delegate_to: "{{ groups['jenkins'][0] }}"
-  copy:
-    content: ""
-    dest: "{{ jenkins_ref_dir }}/jenkins.yml"
-
-- name: Creating virtual environment for ansible execution
-  delegate_to: "{{ groups['jenkins'][0] }}"
-  pip:
-    requirements: "{{ jenkins_ref_dir }}/requirements.txt"
-    virtualenv: "{{ jenkins_venv_dir }}"
-    virtualenv_python: python

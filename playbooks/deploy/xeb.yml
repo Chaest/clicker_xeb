@@ -2,7 +2,9 @@
 
 all:
   hosts:
-    staging_back_1:
+    staging:
       ansible_user: jenkins
-    production_back_1:
+      ansible_ssh_port: 2222
+    production:
       ansible_user: jenkins
+      ansible_ssh_port: 2222

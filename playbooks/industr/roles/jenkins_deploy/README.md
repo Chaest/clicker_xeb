@@ -5,7 +5,6 @@ It work by following these steps:
  1. Create a configuration folder with all the file used to build the docker image and container (task: *generate_conf*)
  2. Tearing down existing installation
  3. Building of the image and running the container
- 4. Performing final configuration actions to the running container (e.g. preparing a virtual environment)
 
 # Variables
 

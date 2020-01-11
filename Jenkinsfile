@@ -18,6 +18,9 @@ pipeline{
 			}
 		}
                 stage('Validate staging'){
+			options{
+				retry(10)
+			}
                         steps{
 				sh 'python validity.py'
                         }
