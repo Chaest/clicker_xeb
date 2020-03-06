@@ -1,6 +1,6 @@
 ---
 
-- name: Copy SSH key pair 
+- name: Copy SSH key pair
   copy:
     src: ../../ssh/{{ item }}
     dest: "{{ path_to_installer }}/{{ item }}"
@@ -25,7 +25,7 @@
   vars:
     deploy_job: "{{ lookup('template', 'deploy_job.groovy') }}"
   loop: "{{ jenkins_template_files }}"
-  
+
 - name: Adding files
   copy:
     src: "{{ item }}"

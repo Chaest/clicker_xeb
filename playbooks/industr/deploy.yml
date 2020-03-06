@@ -3,7 +3,8 @@
 - name: Deploy infra
   hosts: localhost
   tasks:
-    - import_role:
+    - name: Create infrastrure on AWS
+      import_role:
         name: create_infra
       tags:
         - install
@@ -17,15 +18,18 @@
   tasks:
     - name: Wait 600 seconds for jenkins connection to become reachable/usable
       wait_for_connection:
-    - import_role:
+    - name: Install python
+      import_role:
         name: python_install
       tags:
         - install
-    - import_role:
+    - name: Install docker
+      import_role:
         name: docker_install
       tags:
         - install
-    - import_role:
+    - name: Deploy Jenkins
+      import_role:
         name: jenkins_deploy
       tags:
         - install
@@ -39,15 +43,18 @@
   tasks:
     - name: Wait 600 seconds for the env connection to become reachable/usable
       wait_for_connection:
-    - import_role:
+    - name: Install python
+      import_role:
         name: python_install
       tags:
         - install
-    - import_role:
+    - name: Install docker
+      import_role:
         name: docker_install
       tags:
         - install
-    - import_role:
+    - name: Deploy xebenvs
+      import_role:
         name: xebenv_deploy
       tags:
         - install

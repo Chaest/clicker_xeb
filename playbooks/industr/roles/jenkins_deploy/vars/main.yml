@@ -1,0 +1,12 @@
+---
+
+needed_params:
+  - name: app
+    type: string
+    desc: The name of the application 
+  - name: installer_base_dir
+    type: path
+    desc: The base directory for the installer folder
+  - name: ssh_key_name
+    type: string
+    desc: The name of the SSH key

@@ -1,0 +1,36 @@
+---
+
+- name: Ensure the parameters list is valid
+  assert:
+    that: params is defined and params is list_of_param
+    quiet: "{{ not verbose_assertions }}"
+
+- name: Ensure the required parameters are set
+  assert:
+    that: "{{ param.name }} is defined"
+    success_msg: >
+      {{ param.desc }} was provided.
+    fail_msg: >
+      {{ param.desc }} is not defined.
+    quiet: "{{ not verbose_assertions }}"
+  loop: "{{ params }}"
+  loop_control:
+    label: "{{ param.name }}"
+    loop_var: param
+
+- name: Ensure the required parameters have the correct type
+  assert:
+    that: "{{ param.name }} is {{ param.type }}"
+    success_msg: >
+      {{ param.desc }} was provided with a valid type.
+    fail_msg: >
+      {{ param.desc }} was expected to be of type
+      {{ param.type }} but found a variable of type
+      {{ lookup('vars', param.name) | type_debug }}.
+    quiet: "{{ not verbose_assertions }}"
+  loop: "{{ params }}"
+  loop_control:
+    label: "{{ param.name }}"
+    loop_var: param
+
+

@@ -1,0 +1,21 @@
+---
+
+needed_params:
+  - name: app
+    type: string
+    desc: The name of the application
+  - name: installer_base_dir
+    type: path
+    desc: The base directory for the installer folder
+  - name: ssh_key_name
+    type: string
+    desc: The name of the SSH key
+  - name: jenkins_to_back_user
+    type: string
+    desc: The user that Jenkins will use to connect to the Back
+  - name: jenkins_to_back_ssh_dir
+    type: path
+    desc: The path to locations of the SSH keys for Jenkins user on the Back
+  - name: jenkins_to_back_password
+    type: secret
+    desc: The password for the Jenkins user on the Back
