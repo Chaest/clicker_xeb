@@ -1,0 +1,15 @@
+---
+
+needed_params:
+  - name: ldap_domain
+    type: string
+    desc: The LDAP domain/hostname 
+  - name: ldap_base_dn
+    type: string
+    desc: The base dn of the LDAP
+  - name: ldap_admin_pwd
+    type: secret
+    desc: The admin password of the LDAP
+  - name: ldap_config_pwd
+    type: secret
+    desc: The admin config of the LDAP

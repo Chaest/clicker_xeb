@@ -1,0 +1,33 @@
+---
+
+- name: Ensure OpenLDAP config dir exists
+  file:
+    path: "{{ ldap_config_dir }}"
+    state: directory
+  become: yes
+
+- name: Generate OpenLDAP config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ ldap_config_dir }}/{{ item }}"
+  become: yes
+  loop: "{{ config_files }}"
+
+- name: Tear down existing services
+  docker_compose:
+    project_src: "{{ ldap_config_dir }}"
+    state: absent
+
+- name: Create and start services
+  docker_compose:
+    project_src: "{{ ldap_config_dir }}"
+    build: yes
+  register: output
+
+- name: Remove OpenLDAP config files
+  file:
+    path: "{{ ldap_config_dir }}/{{ item }}"
+    state: absent
+  become: yes
+  loop: "{{ config_files }}"
+

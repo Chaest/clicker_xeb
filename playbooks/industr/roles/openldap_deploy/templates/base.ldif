@@ -1,0 +1,38 @@
+{% for ou in ldap_ous %}
+dn: {{ ou.dn }}
+changetype: add
+{% for class in ldap_ou_classes %}
+objectclass: {{ class }}
+{% endfor %}
+ou: {{ ou.name }}
+description: {{ ou.desc }}
+{% endfor %}
+
+
+{% for group in ldap_groups %}
+dn: cn={{ group.name }},{{ ldap_xeboups_ou }}
+changetype: add
+{% for class in ldap_group_classes %}
+objectclass: {{ class }}
+{% endfor %}
+cn: admins
+{% for member in group.members %}
+member: cn={{ member.name }},{{ ldap_xeboeple_ou }}
+{% endfor %}
+{% endfor %}
+
+{% for people in ldap_people %}
+dn: cn={{ people.name }},{{ ldap_xeboeple_ou }}
+changetype: add
+{% for class in ldap_people_classes %}
+objectclass: {{ class }}
+{% endfor %}
+cn: {{ people.name }}
+sn: {{ people.name }}
+displayName: {{ people.display_name }}
+description: {{ people.display_name }}
+o: {{ ldap_people_o }}
+userPassword: {{ people.password }}
+uid: {{ people.name }}
+mail: {{ people.mail }}
+{% endfor %}
