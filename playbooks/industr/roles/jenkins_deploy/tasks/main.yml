@@ -1,5 +1,11 @@
 ---
 
+- name: Ensure needed params were set
+  import_role:
+    name: check_params
+  vars:
+    params: "{{ needed_params }}"
+
 - name: Generate the jenkins' confs
   import_tasks: generate_confs.yml
 
@@ -13,7 +19,7 @@
   docker_compose:
     project_src: "{{ path_to_installer }}"
     state: absent
-   
+
 - name: Create and start services
   docker_compose:
     project_src: "{{ path_to_installer }}"
@@ -21,7 +27,7 @@
   register: output
 
 - name: Wait for Jenkins installation to finish
-  uri: 
+  uri:
     url: "{{ jenkins_url }}/login?from=%2F"
     method: GET
     status_code: 200

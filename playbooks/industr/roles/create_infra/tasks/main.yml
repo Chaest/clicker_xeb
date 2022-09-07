@@ -1,5 +1,11 @@
 ---
 
+- name: Ensure needed params were set
+  import_role:
+    name: check_params
+  vars:
+    params: "{{ needed_params }}"
+
 - name: Ensure the terraform project folder exists
   file:
     dest: "{{ project_dir }}"
@@ -27,7 +33,7 @@
 - name: Adding hosts
   vars:
     host_name: "{{ item.key.split('_')[0] }}"
-    host_dns: "{{ item.value.value }}"  
+    host_dns: "{{ item.value.value }}"
   add_host:
     name: "{{ host_name }}"
     groups: "{{ 'environments' if host_name != 'jenkins' else 'all' }}"

@@ -3,7 +3,7 @@
 - name: Install aptitude using apt
   apt:
     name: aptitude
-    state: latest
+    state: present
     update_cache: yes
     force_apt_get: yes
 
@@ -17,7 +17,7 @@
       - python3-pip
       - virtualenv
       - python3-setuptools
-    state: latest
+    state: present
     update_cache: yes
 
 - name: Add Docker GPG apt Key
@@ -34,7 +34,7 @@
   apt:
     update_cache: yes
     name: docker-ce
-    state: latest
+    state: present
 
 - name: Install docker-compose
   pip:
